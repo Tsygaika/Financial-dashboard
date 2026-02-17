@@ -3,9 +3,9 @@ import yadisk
 import os
 
 y = yadisk.YaDisk(token="TOKEN")
-table_name = './Таблица финансов.xlsx'
+table_name = './Finances.xlsx'
 
-def read_excel_with_merged_cells(filename, sheet_name):
+def excel_to_arrays(filename, sheet_name):
     workbook = openpyxl.load_workbook(filename, data_only=True)
     sheet = workbook[sheet_name]
 
@@ -35,29 +35,31 @@ def read_excel_with_merged_cells(filename, sheet_name):
     return all_data
 
 
+os.makedirs('output', exist_ok=True)
+
 from subscripts.expenses import parse_expenses
-rows = read_excel_with_merged_cells(table_name, 'Расходы')
+rows = excel_to_arrays(table_name, 'Расходы')
 parse_expenses(rows)
 
 from subscripts.income import parse_income
-rows = read_excel_with_merged_cells(table_name, 'Доходы')
+rows = excel_to_arrays(table_name, 'Доходы')
 parse_income(rows)
 
 from subscripts.portfolio_refills import parse_refills
-rows1 = read_excel_with_merged_cells(table_name, 'Счёт 1')
-rows2 = read_excel_with_merged_cells(table_name, 'Счёт 2')
+rows1 = excel_to_arrays(table_name, 'Счёт 1')
+rows2 = excel_to_arrays(table_name, 'Счёт 2')
 parse_refills(rows1, rows2)
 
 from subscripts.deposits import parse_deposits
-rows = read_excel_with_merged_cells(table_name, 'Вклады')
+rows = excel_to_arrays(table_name, 'Вклады')
 parse_deposits(rows)
 
 from subscripts.stocks import parse_stocks
-rows = read_excel_with_merged_cells(table_name, 'Акции')
+rows = excel_to_arrays(table_name, 'Акции')
 parse_stocks(rows)
 
 from subscripts.capital import parse_capital
-rows = read_excel_with_merged_cells(table_name, 'Активы')
+rows = excel_to_arrays(table_name, 'Активы')
 parse_capital(rows)
 
 
